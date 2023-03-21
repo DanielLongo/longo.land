@@ -1,0 +1,51 @@
+{{ define "title" -}}
+{{ .Title | title }}
+{{- end }}
+{{ define "main" -}}
+{{ .Content }}
+<ul>
+<div class="flex flex-1 flex-col items-center justify-center content-center">
+	<div class="w-[575px] text-left content-start">
+{{ range .Site.RegularPages }}
+		<!-- {{- if .Param "datesinlist" }}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006 Jan 02" }}</time> &ndash; {{ end -}} -->
+		<br>
+		<!-- render tags in small red text seperated by bullet points -->
+		<div class="flex-row flex-1 flex justify-between">
+			<div>
+				{{ $numTags := len .Params.tags }}
+					{{ range $index, $tag := .Params.tags }}
+					<!-- href is /tags/[tagname] -->
+					<a class="hover:underline no-underline text-inline text-[#990f3d]" href="/tags/{{ $tag }}">
+						<span class="text-xs">{{ . }}</span>
+					</a>
+					<!-- if the current index is not equal to the length of tags -->
+					{{ if ne $index (sub $numTags 1) }}
+					<span class="text-xs text-[#990f3d]"> • </span>
+					{{ end }}
+				{{ end }}
+			</div>
+		<p class="inline text-xs mt-[8px] font-serif">{{ .Date.Format "Jan/2006" }}</p>
+		</div>
+		<a href="{{ .RelPermalink }}">
+		<div class=" text-black text-left flex flex-row flex-1 text-lg no-underline font-serif justify-between">
+			<p class="inline  hover:underline">{{ .Title }}</p>
+			<!-- date -->
+		</div>
+		</a>
+		{{- if .Param "authorsinlist" }}
+		{{ with .Params.authors }}
+			by 
+			{{ delimit . ", " " and " }}
+		{{end}}
+		{{ end -}}
+		<!-- make a thin horizontal gray bar that fades near the ends using gradient centered and only 10/12 width-->
+		<!-- <div class="items-center content-center justify-center flex flex-1 flex-row w-full">
+			<div class="w-full h-[1px] bg-[#e5e5e5] mt-[15px] mb-[-5px]"></div>
+		</div> -->
+
+
+{{- end }}
+</div>
+</div>
+</ul>
+{{- end }}

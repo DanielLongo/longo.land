@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language }}">
+<head>
+	{{ partial "head.html" .}}
+	<title>{{ if not .IsHome }}{{ .Title | title }} | {{ end }}{{ .Site.Title }}</title>
+	<link rel="canonical" href="{{ .Site.BaseURL }}">
+	<link rel='alternate' type='application/rss+xml' title="{{ .Site.Title }} RSS" href='/index.xml'>
+	<!-- <link rel='stylesheet' type='text/css' href='/style.css'> -->
+	{{ with .Site.Params.favicon }}<link rel="icon" href="{{ . }}">
+	{{ end -}}
+	<meta name="description" content="{{ with .Params.description }}{{ . }}{{ else }}{{ .Summary }}{{ end }}">
+	{{ if isset .Params "tags" }}<meta name="keywords" content="{{ with .Params.tags }}{{ delimit . ", " }}{{ end }}">
+	{{ end -}}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="index, follow">
+	<meta charset="utf-8">
+</head>
+<body class="bg-[#fff1e5]">
+{{ if .Site.Menus.main }}{{ partial "nav.html" . }}{{ end -}}
+<main>
+<header><h1 class="text-center text-5xl text-zinc-800 font-serif font-semibold mt-6" id="tag_{{ .Title }}">{{ block "title" . }}{{ end }}</h1></header>
+{{ if .IsHome }}
+<div>
+	<p class="text-center italic text-black font-serif">
+		By <a href="https://danieldlongo.com/" target="_blank" class="text-black underline
+		">Daniel Longo</a> • <a class="underline" href="/actions/subscribe">Subscribe</a>
+	</p>
+</div>
+{{ end -}}
+<article>
+{{ block "main" . }}
+{{ .Content }}
+{{ end }}
+</article>
+</main>
+{{ block "footer" . }}
+<footer>
+	<div class="flex-col flex items-center justify-center p-8">
+		{{- if .Param "showrss" }}<a href="/index.xml"><img src="/rss.svg" style="max-height:1.5em; margin-right: .5rem; color: #000;" alt="RSS Feed" title="Subscribe via RSS for updates."></a>{{ end }}
+		{{- if .Param "showTwitter" }}<a href="https://twitter.com/danieldlongo" target="_blank"><img src="/twitter.svg" style="max-height:1.9em; margin-left: .5rem;" alt="Twitter" title="Follow me on Twitter."></a>{{ end }}
+		<p class="text-xs text-gray-500"><a href="https://twitter.com/danieldlongo" target="_blank">Twitter</a> • <a href="/index.xml">RSS</a> • <a href="/actions/subscribe">Email</a></p>
+		<p class="text-xs text-gray-500">© {{ now.Format "2006" }} Daniel Longo</p>	
+	</div>
+	
+	<!-- <a href="{{ .Site.BaseURL }}">{{ .Site.BaseURL }}</a> -->
+	<div class="flex-row flex bg-red-200 items-center justify-center">
+		{{- if .Param "showrss" }}<a href="/index.xml"><img src="/rss.svg" style="max-height:1.5em; margin-right: .5rem; color: #000;" alt="RSS Feed" title="Subscribe via RSS for updates."></a>{{ end }}
+		{{- if .Param "showTwitter" }}<a href="https://twitter.com/danieldlongo" target="_blank"><img src="/twitter.svg" style="max-height:1.9em; margin-left: .5rem;" alt="Twitter" title="Follow me on Twitter."></a>{{ end }}
+	</div>
+</footer>
+{{ end }}
+</body>
+</html>
