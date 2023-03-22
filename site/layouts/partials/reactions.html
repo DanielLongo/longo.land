@@ -1,26 +1,55 @@
+<!-- script tag to get reactions stats dict https://us-central1-longoland-bd5d7.cloudfunctions.net/tweet-stats  -->
+<script>
+    const tweetStats = async () => {
+        const response = await fetch('https://us-central1-longoland-bd5d7.cloudfunctions.net/tweet-stats?tweetId={{ .Params.tweetid }}',
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+        const data = await response.json();
+        document.getElementById('likeCount').innerHTML = data.likes
+        document.getElementById('retweetCount').innerHTML = data.comments
+        document.getElementById('replyCount').innerHTML = data.retweets
+        return data;
+    }
+    tweetStats().then(data => {
+        comsole.log("data", data)
+        
+    });
+</script>
+
+
+
 <div class="flex flex-col mt-4 w-full items-center">
     <div class="w-full h-[1px] bg-[#e5e5e5] mt-[15px] mb-[-5px]"></div>
     <p class=" mt-4 text-2xl font-bold">What do you think?</p>
     <div class="flex flex-row flex-1 text-sm"><p class="inline font-sans">Reactions via<p class="inline font-bold text-[#1DA1F2]">&nbsp;Twitter</p></p></div>
     <!-- 3 options with icons, like comment, retweet -->
     <div class="flex flex-row flex-1 mt-4 justify-around">
-        <!-- like button with heart icon-->
-        <div>
-            <a href="https://twitter.com/intent/like?tweet_id={{ .Params.tweetid }}" class="inline-flex items-center text-zinc-800 text-2xl hover:text-red-500 hover:bg-red-200 rounded-2xl p-2 mx-4" target="_blank">
+        <!-- like button with heart icon and like count in small text beneath-->
+        <div class="flex flex-col">
+            <a href="https://twitter.com/intent/like?tweet_id={{ .Params.tweetid }}" class="inline-flex items-center text-zinc-800 text-2xl hover:text-red-500 hover:bg-red-200 rounded-2xl py-2 px-4 mx-4 flex-col" target="_blank">
                 <i class="far fa-heart"></i>
+                <p id="likeCount" class="text-zinc-600 text-sm"></p>
             </a>
         </div>
         <!-- comment button with comment icon -->
         <div>
-            <a href="https://twitter.com/intent/tweet?in_reply_to={{ .Params.tweetid }}" class="inline-flex items-center text-zinc-800 text-2xl hover:text-blue-500 hover:bg-blue-200 rounded-2xl p-2 mx-4" target="_blank">
+            <a href="https://twitter.com/intent/tweet?in_reply_to={{ .Params.tweetid }}" class="inline-flex items-center text-zinc-800 text-2xl hover:text-blue-500 hover:bg-blue-200 rounded-2xl py-2 px-4 mx-4 flex-col" target="_blank">
                 <i class="far fa-comment"></i>
+                <p id="replyCount" class="text-zinc-600 text-sm"></p>
             </a>
+            <!-- display comment count -->
         </div>
 
         <!-- retweet button with retweet icon -->
         <div>
-            <a href="https://twitter.com/intent/retweet?tweet_id={{ .Params.tweetid }}" class="inline-flex items-center text-zinc-800 text-2xl hover:text-green-500 hover:bg-green-200 rounded-2xl p-2 mx-4" target="_blank">
+            <a href="https://twitter.com/intent/retweet?tweet_id={{ .Params.tweetid }}" class="inline-flex items-center text-zinc-800 text-2xl hover:text-green-500 hover:bg-green-200 rounded-2xl py-2 px-4 mx-4 flex-col" target="_blank">
                 <i class="fas fa-retweet"></i>
+                <span id="retweetCount" class="text-zinc-600 text-sm"></span>
             </a>
         </div>
     </div>
